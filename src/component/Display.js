@@ -12,12 +12,37 @@ export default class Display extends React.Component {
 
   render() {
     // Add our conditional error logic 
-
-    
+// Assign a call back method inside the render function
     return (
-      <div className="component-display">
-        <div>{this.props.value}</div>
-      </div>
+    <ErrorBoundary fallbackUI={DisplayError}>
+    <DisplayValue {...this.props} />
+    </ErrorBoundary> 
     );
   }
+}
+
+const DisplayError = () => ( 
+  // <-- props passed to fallbackUI component
+  <div className="component-display">
+  <div>Error</div>
+  </div>
+);
+
+class DisplayValue extends React.Component {
+static propTypes = {
+  value: PropTypes.string,
+};
+
+render() {
+  if(this.props.value == "67"){
+    // Error generator
+    throw new Error ('That value is wrong!');
+  }
+
+return (
+ <div className = "component-display">
+ <div>{this.props.value}</div>
+ </div>
+);
+}
 }
